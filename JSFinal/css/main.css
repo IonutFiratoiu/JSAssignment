@@ -1,0 +1,41 @@
+.star {
+    display: inline-block;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.star.active {
+    color: #000;
+}
+
+#map {
+    width: 33%;
+    height: 300px;
+}
+
+.container.lead {
+    margin-top: 40px;
+    padding: 5px;
+}
+
+tbody {
+    font-size: 12px;
+}
+
+tfoot {
+    font-size: 15px;
+}
+
+.tfpleft {
+    float: left;
+}
+
+.tfpright {
+    float: right;
+}
+
+.star.toggle {
+    color: #000000;
+}
