@@ -28,33 +28,61 @@ var starRating = document.getElementsByClassName('star-rating');
 var stars = document.getElementsByClassName('star');
 var dr = document.getElementsByClassName('drating');
 
-for (var i = 0; i < stars.length; i++) {
-    var star = stars[i];
 
-    var starRating = document.getElementsByClassName('star-rating');
+//var star = stars[i];
 
-    star.addEventListener('mouseover', function () {
-        var rating = this.getAttribute("data-value");
-        for (var j = 0; j < parseInt(rating, 10); j++) {
+starRating = document.getElementsByClassName('star-rating');
+
+var mouseoverstar = function () {
+    var rating = this.getAttribute("data-value");
+    for (var j = 0; j < parseInt(rating, 10); j++) {
+        stars[j].classList.add('active');
+    }
+};
+for (var i = 0; i < 5; i++) {
+    stars[i].addEventListener('mouseover', mouseoverstar);
+}
+
+for (var i = 0; i < 5; i++) {
+    stars[i].addEventListener('click', function () {
+        var rating = parseInt(this.getAttribute("data-value"));
+        console.log(rating);
+        for (var k = 0; k <= 4; k++) {
+            stars[k].classList.remove('active');
+        }
+        for (var j = 0; j <= rating - 1; j++) {
             stars[j].classList.add('active');
         }
+        starRating = rating;
+
+        for (var i = 0; i < 5; i++) {
+            stars[i].removeEventListener('mouseout', mouseoutstar);
+            stars[i].removeEventListener('mouseover', mouseoverstar);
+        }
+
     });
 
-    star.addEventListener('click', function () {
-        var rating = this.getAttribute("data-value");
-        stars[rating - 1].classList.remove('toggle');
-        for (j = 0; j <= rating - 1; j++) {
-            stars[j].classList.add('toggle');
-        };
-        starRating = j;
-            });
-    star.addEventListener('mouseout', function () {
-        for (var j = 0; j < stars.length; j++) {
-            stars[j].classList.remove('active');
-        }
-    });
+
 }
-;
+
+var mouseoutstar = function () {
+    for (var j = 0; j < stars.length; j++) {
+        stars[j].classList.remove('active');
+    }
+};
+for (var i = 0; i < 5; i++) {
+    stars[i].addEventListener('mouseout', mouseoutstar);
+}
+
+var resetStars = function(){
+    for(var i = 0 ; i < 5 ; i++){
+        stars[i].addEventListener('mouseout', mouseoutstar);
+        stars[i].addEventListener('mouseover', mouseoverstar);
+        starRating = 0;
+        stars[i].classList.remove('active');
+    }
+};
+
 
 /*========================================================================
  Validation
@@ -70,7 +98,7 @@ function initAutocomplete() {
 
 var codeAddress = function () {
     var address = document.getElementById('city');
-    geocoder.geocode( { 'address': address.value}, function(results, status) {
+    geocoder.geocode({'address': address.value}, function (results, status) {
         unlockForm();
         hideLoading();
         var addrLocation = results[0].geometry.location;
@@ -108,12 +136,12 @@ form.addEventListener("submit", function (event) {
         showLoading();
         codeAddress(data.city);
     }
-    ;
+
     return false;
 });
 
 var getValues = function () {
-    var object =  {
+    var object = {
         name: clientname.value,
         city: city.value,
         rating: starRating + "/5"
@@ -125,27 +153,35 @@ var createRow = function (values) {
     var tr = document.createElement("tr");
     tr.innerHTML = tmpl("tpl", values);
     tableBody.appendChild(tr);
+
+    resetStars();
 };
 
 var isValidData = function (data) {
     if ((isValidName) && (isValidCity) && (isValidRating)) {
         return true;
     }
+
 };
 
-var isValidName = function () {
-    if ((name >= 2) && (name != "") &&  (/^[a-zA-Z ]/.test(name))) {
+var isValidName = function (name) {
+    var regex = /^[a-zA-Z ]{2, }$/;
+    var name = document.getElemetnById('name');
+
+    if (regex.test(name.value)) {
         return true;
-    };
+    }
+    ;
 };
 
 var isValidCity = function () {
     if (codeAddress()) {
         return true;
     }
+    ;
 };
 
-var isValidRating = function() {
+var isValidRating = function () {
     if (starRating != null)
         return true;
 };
@@ -218,14 +254,14 @@ var onResponseFromGoogle = function (results) {
 
 var lockForm = function () {
     var inputs = form.getElementsByTagName('input');
-    for(var i = 0; i < inputs.length; i++){
+    for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = true;
     }
 };
 
 var unlockForm = function () {
     var inputs = form.getElementsByTagName('input');
-    for(var i = 0; i < inputs.length; i++){
+    for (var i = 0; i < inputs.length; i++) {
         inputs[i].disabled = false;
     }
 };
@@ -240,8 +276,8 @@ var hideLoading = function () {
     loadingShow.style.display = 'none';
 };
 /*====================================================================
-            MARKER
-*==================================================================== */
+ MARKER
+ *==================================================================== */
 
 
 

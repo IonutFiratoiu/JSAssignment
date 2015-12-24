@@ -6,7 +6,7 @@
     font-size: 30px;
 }
 
-.star.active {
+.active {
     color: #000;
 }
 
@@ -34,8 +34,4 @@ tfoot {
 
 .tfpright {
     float: right;
-}
-
-.star.toggle {
-    color: #000000;
 }
